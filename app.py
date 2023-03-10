@@ -1,18 +1,20 @@
 from flask import Flask, request, render_template
-#import modelo
+from werkzeug.utils import secure_filename
+import modelo as modelo
 app = Flask(__name__)
 
 
 @app.route("/")
 def home():
-    return render_template("/home/adminaz/Desktop/rpi/index.html")
+    return render_template("index.html")
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
-    file = request.files['image']
-    file.save('image.jpg')
-    #pred = modelo.process_image()
+    if request.method == 'POST':
+        file = request.files['image']
+        file.save(secure_filename('image.jpg'))
+        #pred = modelo.process_image()
     return 'Imagen Recibida'
 
 
